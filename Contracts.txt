@@ -1,0 +1,20 @@
+
+* Contracts are part of WCF Explicitness
+
+* Data Contracts define the shape of the data:
+    Request data goes TO the service
+	Response data returns FROM the Service
+
+* Service Contract define the API
+         List of operations that a client can call
+
+* Use DataContractSerializer instead of XmlSerializer because it is Opt-in serializer.
+
+* Services are the implementation of the service contract for the server side of the wire.
+          It is the first line of contact and manages all down level calls.
+
+* Golden rule of testability
+      Do not instantiate dependencies.
+	  use constructor overloading to make the class available for testing
+	  and provide concrete implementation on testing
+

@@ -1,0 +1,56 @@
+
+Two Faces of Hosting in WCF
+
+1.Web Hosting:
+  ver traditional from ASMX days,
+  easy to setup
+  requires IIS: hosting handled by iis by instantiating and managing ServiceHost instance automatically
+  Limited to HTTP unless you use WAS
+  used to require SVC file per service
+  endpont does not have complete address and can add trailing address name
+  use custom host factory to have full control to serviceHost instance to feed endpoint information programatically
+
+2.Self Hosting
+   can be any application
+   requires some code more control
+   allow setup custom hosting applications
+
+   using ServiceHost class 
+    used in all hosting scenarios
+	IIS instantiating it for you
+   It is One-to-One with the service : 
+    with optional base address 
+  Requires Endpoint Information:
+    can be fed from configuration or code
+ Once Opened Services are listening and waiting
+ 
+ Two Options for housekeeping
+   Close: wait for any in-progress calls
+   Abort: abort any in-progress calls and client might get exceptions
+
+
+Service Configuration
+    does not have to be over-verbose
+	most importantly it makes sense- it is very readable
+	gives a great overview to system WCF environment
+	defines services and endpoints
+
+
+WAS(Windows Application Services)
+  requires IIS not iis express : change it from debug properties of the project
+  requires a modification to applicationHost.config: can use appCmd.exe script
+  open CMD as Adminstrator in c:windows\system32> cd inetsrv
+                              appcmd.exe set site "Default Web Site" -+bindings.[protocol='net.tcp',bindingInformation='808:*']  
+  need to add the bindings to the site or the application: IIS manager,Advanced Settings of the website : then add net.tcp to http in enabled protocols
+  can simply change config to host another binding
+
+No-Config Hosting
+   Host simply need endpoint information 
+   can get them from config if not provided through other means
+   can create endpoint information programatically 
+
+
+
+
+  
+

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <system.web>
+    <machineKey decryptionKey="Decryption Key goes here" validationKey="validation key goes here" />
+  </system.web>
+</configuration>

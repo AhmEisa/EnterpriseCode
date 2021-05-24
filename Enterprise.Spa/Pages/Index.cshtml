@@ -1,0 +1,19 @@
+﻿@page
+@using Microsoft.AspNetCore.Authentication
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div>
+    <strong>ID_Token</strong>
+    <span>@await ViewContext.HttpContext.GetTokenAsync("id_token")</span>
+</div>
+<div>
+    <strong>Access_Token</strong>
+    <span>@await ViewContext.HttpContext.GetTokenAsync("access_token")</span>
+</div>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>

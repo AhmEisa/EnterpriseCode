@@ -1,0 +1,20 @@
+
+* Consuming WCF Services
+
+Complex process to establish communication with a hosted service : Lots of low-level stuff (unamanged code)
+        Pipe establishment
+		Handshaking
+		Security exchange
+		Message transmision
+
+This is where SOAP tooling comes in as 
+      Client wants to know what is available and the data shape
+
+The Proxy
+    WCF provides the ClientBase<T> class where T : is the service Contract
+	Proxy implments the the service contract Interface
+	Proxy use Channel property from CleintBase<T> 
+	Proxy require endpoint information : can be from code or configuration
+    Contracts assembly can be shared by client side dependent on the application architecture
+
+

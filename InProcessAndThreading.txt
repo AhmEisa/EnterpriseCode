@@ -1,0 +1,18 @@
+
+In-Process Services
+ Consuming Client running in  the same process as service host
+           typically using IPC binding 
+		   both client and service use same contract
+		   can use either proxy or channel factory 
+		   all features of WCF available
+ If client calling service to update UI , hosting thread must be considered.
+ 
+ Hosting Threads
+     by default a service host opened in a UI will instantiate and execute service on that UI thread
+	 a service running in a UI may want to update that UI
+	 must make sure UI is not busy or service will wait
+	 can also forces services to execute on worker thread
+	     UseSynchronizationContext property
+		 must marshal for UI updates
+     marshaling can be done using SynchronizationContext object
+

@@ -1,0 +1,22 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<script>
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", "http://localhost:8080/api/proposals?conferenceId=1655", true);
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+            console.log(xmlHttp.responseText);
+        }
+    };
+    xmlHttp.send(null);
+
+</script>
