@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unit = System.ValueTuple;
 
 namespace Enterprise.Framework.Topics
@@ -41,24 +38,41 @@ namespace Enterprise.Framework.Topics
             return t;
         }
 
-
-    }
-    public static class Functional
-    {
-        public static R Connect<R>(string connStr, Func<IDbConnection, R> func)
+        public static ImmutableTypes.Option<int> Parse(string s)
         {
-            using (var conn = new SqlConnection(connStr))
-            {
-                conn.Open();
-                return func(conn);
-            }
+            int result;
+            if (int.TryParse(s, out result)) return Some(result);
+            else return None;
+        }
+        public static ImmutableTypes.Option<string> Lookup(this NameValueCollection @this, string key) => @this[key];
+        public static ImmutableTypes.Option<T> Lookup<K, T>(this Dictionary<K, T> dict, K key)
+        {
+            T value;
+            if (dict.TryGetValue(key, out value)) return Some(value);
+            else return None;
         }
 
-
-
     }
 
-
+    public class AppConfig
+    {
+        NameValueCollection source;
+        public AppConfig() : this(ConfigurationManager.AppSettings) { }
+        public AppConfig(NameValueCollection source) { this.source = source; }
+        public ImmutableTypes.Option<string> Get(string name) => this.source.Lookup(name);
+        public string Get(string name, string defaultValue) => this.source.Lookup(name).Match(() => defaultValue, (value) => value);
+    }
+    //public static class Functional
+    //{
+    //    public static R Connect<R>(string connStr, Func<IDbConnection, R> func)
+    //    {
+    //        using (var conn = new SqlConnection(connStr))
+    //        {
+    //            conn.Open();
+    //            return func(conn);
+    //        }
+    //    }
+    //}
 }
 
 namespace Enterprise.Framework.Topics.ImmutableTypes
@@ -66,13 +80,19 @@ namespace Enterprise.Framework.Topics.ImmutableTypes
     public class Age
     {
         private int Value { get; }
-        public Age(int value)
+        public static Option<Age> Of(int value)
         {
-            if (value <= 0 || value < 120)
-                throw new ArgumentOutOfRangeException(nameof(value), "Value out of Range");
-
+            if (IsValid(value)) return new Age(value);
+            else return new Option<Age>();
+        }
+        private Age(int value)
+        {
+            if (!IsValid(value)) throw new ArgumentNullException($"{value} is not a valid age.");
             this.Value = value;
         }
+
+        private static bool IsValid(int value) => value >= 0 || value < 120;
+
         public static bool operator <(Age l, Age r) => l.Value < r.Value;
         public static bool operator >(Age l, Age r) => l.Value > r.Value;
         public static bool operator <(Age l, int r) => l < new Age(r);
@@ -80,6 +100,9 @@ namespace Enterprise.Framework.Topics.ImmutableTypes
     }
     public struct None { internal static readonly None Default = new None(); }
     public struct Some<T> { internal T Value { get; } internal Some(T value) { if (value == null) throw new ArgumentNullException(); Value = value; } }
+
+    //Use it in your data objects to model the fact that a property may not be set, and in your
+    //functions to indicate the possibility that a suitable value may not be returned.
     public struct Option<T>
     {
         readonly bool isSome;
@@ -88,7 +111,7 @@ namespace Enterprise.Framework.Topics.ImmutableTypes
         private Option(T value) { this.isSome = true; this.value = value; }
         public static implicit operator Option<T>(None _) => new Option<T>();
         public static implicit operator Option<T>(Some<T> some) => new Option<T>(some.Value);
-        public static implicit operator Option<T>(T value) => value == null ? new Option<T>(): new Option<T>(value);//None : Some(value);
+        public static implicit operator Option<T>(T value) => value == null ? new Option<T>() : new Option<T>(value);//None : Some(value);
         public R Match<R>(Func<R> None, Func<T, R> Some) => isSome ? Some(value) : None();
     }
 }
