@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms.cs" />
+    <Compile Include="AsyncParallel.cs" />
     <Compile Include="Functional.cs" />
     <Compile Include="Streaming.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
