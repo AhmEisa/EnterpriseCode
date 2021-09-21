@@ -28,7 +28,7 @@ namespace Enterprise.Client
             {
                 var stream = await response.Content.ReadAsStreamAsync();
                 response.EnsureSuccessStatusCode();
-                var dataReturned = stream.ReadAndSerrializeFromJson < List<object>();
+                //var dataReturned = stream.ReadAndSerrializeFromJson < List<object>();
             }
         }
 
@@ -44,7 +44,7 @@ namespace Enterprise.Client
             {
                 var stream = await response.Content.ReadAsStreamAsync();
                 response.EnsureSuccessStatusCode();
-                var dataReturned = stream.ReadAndSerrializeFromJson < List<object>();
+                //var dataReturned = stream.ReadAndSerrializeFromJson < List<object>();
             }
         }
 
@@ -55,12 +55,12 @@ namespace Enterprise.Client
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
 
-            using (var response = await this.client.Client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
-                response.EnsureSuccessStatusCode();
-                var dataReturned = stream.ReadAndSerrializeFromJson < List<object>();
-            }
+            //using (var response = await this.client.Client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+            //{
+            //    var stream = await response.Content.ReadAsStreamAsync();
+            //    response.EnsureSuccessStatusCode();
+            //    var dataReturned = stream.ReadAndSerrializeFromJson <List<object>();
+            //}
         }
 
         private async Task GetWihTypedScopedClient(CancellationToken cancellationToken)
@@ -84,14 +84,15 @@ namespace Enterprise.Client
                     else if (response.StatusCode == System.Net.HttpStatusCode.UnprocessableEntity)
                     {
                         var errorStream = await response.Content.ReadAsStreamAsync();
-                        var validationErrors = errorStream.ReadAndDeserailizeFromJson();
-                        Console.WriteLine(validationErrors); return;
+                        //var validationErrors = errorStream.ReadAndDeserailizeFromJson();
+                        //Console.WriteLine(validationErrors);
+                        return;
                     }
                     response.EnsureSuccessStatusCode();
                 }
                 var stream = await response.Content.ReadAsStreamAsync();
 
-                var dataReturned = stream.ReadAndSerrializeFromJson < List<object>();
+                //var dataReturned = stream.ReadAndSerrializeFromJson < List<object>();
             }
         }
     }

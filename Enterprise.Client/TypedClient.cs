@@ -30,7 +30,7 @@ namespace Enterprise.Client
             {
                 var stream = await response.Content.ReadAsStreamAsync();
                 response.EnsureSuccessStatusCode();
-                var dataReturned = stream.ReadAndSerrializeFromJson<List<object>();
+                //var dataReturned = stream.ReadAndSerrializeFromJson<List<object>();
             }
         }
     }

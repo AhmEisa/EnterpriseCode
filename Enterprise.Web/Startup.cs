@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Enterprise.Web.CustomAuthorization;
+using Enterprise.Web.Data;
 using Enterprise.Web.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +35,7 @@ namespace Enterprise.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             //ControllerAction : EndpointDataSource=>CreateEndpoints(): create an endpoint for each action method in controllers and store them in
             // Route Collection property called Endpoints.
 
@@ -143,6 +145,16 @@ namespace Enterprise.Web
 
             //Access token intended audience is the protected resource not the client.
 
+            this.ConfigureAspnetIdentity(services);
+        }
+
+        private void ConfigureAspnetIdentity(IServiceCollection services)
+        {
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddDefaultIdentity<IdentityUser>(opts => opts.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDbContext>();
         }
 
         private void AddIdentityConfigurations(IServiceCollection services, IConfiguration configuration)

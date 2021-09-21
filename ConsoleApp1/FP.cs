@@ -7,7 +7,7 @@ namespace Enterprise.Try
 {
     public static class FP
     {
-        public static void Main(string[] args)
+        public static void Main2s(string[] args)
         {
             InvoicingPath InvoicePath = new InvoicingPath();
             AvailabilityPath AvailabilityPath = new AvailabilityPath();

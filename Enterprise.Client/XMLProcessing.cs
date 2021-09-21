@@ -202,8 +202,8 @@ namespace Enterprise.Client
 
         public static T GetMaxValue<T>(this XElement elem, string elemName, string parentNodeName)
         {
-            T maxValue = (from node in elem.Elements(parentNodeName)
-                          select node.Element(elemName).GetAs<T>(default(T))).Max();
+            T maxValue = default(T); //(from node in elem.Elements(parentNodeName)
+            //              select node.Element(elemName).GetAs<T>(default(T))).Max();
             return maxValue;
         }
 
