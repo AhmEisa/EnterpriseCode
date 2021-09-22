@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Enterprise.Web.CustomAuthorization;
 using Enterprise.Web.Data;
 using Enterprise.Web.Middleware;
+using Enterprise.Web.Validations;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -146,6 +148,14 @@ namespace Enterprise.Web
             //Access token intended audience is the protected resource not the client.
 
             this.ConfigureAspnetIdentity(services);
+
+            this.ConfigureValidation(services);
+        }
+
+        private void ConfigureValidation(IServiceCollection services)
+        {
+            services.AddControllers()
+                .AddFluentValidation(opts => opts.RegisterValidatorsFromAssemblyContaining<RegisterRequestValidator>());
         }
 
         private void ConfigureAspnetIdentity(IServiceCollection services)
