@@ -7,6 +7,7 @@ using Enterprise.Web.Data;
 using Enterprise.Web.Middleware;
 using Enterprise.Web.Validations;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -166,6 +167,25 @@ namespace Enterprise.Web
 
             services.AddDefaultIdentity<IdentityUser>(opts => opts.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDbContext>();
         }
+        private void ConfigureAuthenticationAndAuthorization(IServiceCollection services)
+        {
+            services.AddAuthentication(opts =>
+            {
+                opts.AddScheme<AuthHandler>("qsv", "QueryStringValue");
+                opts.DefaultScheme = "qsv";
+            });
+
+            services.AddAuthentication(opts =>
+            {
+                opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(opts =>
+            {
+                opts.LoginPath = "/signin";
+                opts.AccessDeniedPath = "/signin/403";
+            });
+
+            services.AddAuthorization();
+        }
 
         private void AddIdentityConfigurations(IServiceCollection services, IConfiguration configuration)
         {
@@ -245,7 +265,7 @@ namespace Enterprise.Web
             //Access-Control-Allow-Origin: */http://bank.com
             //Preflight Request Skip Conditions: 
             app.UseCors(cnfg => cnfg.AllowAnyOrigin()); // لاضافة الخاصية على التطبيق ككل 
-            //يمكن أضافته على الكنترولر الخاص بالاى بى أى باستخدام [UseCors("PlicyName")]
+                                                        //يمكن أضافته على الكنترولر الخاص بالاى بى أى باستخدام [UseCors("PlicyName")]
 
             //يستخدم التشفير المتماثل فى التطبيق مع استخدام التشفير ذو الطريق الواحد فى التشفير 
             //Use Encryption with Hasing
@@ -262,12 +282,14 @@ namespace Enterprise.Web
             // In Legacy: route middleware send the request to MVC Route Handler to select action method which send the response back down middleware pipeline.
             // register endpoints and routes
 
+            app.UseAuthentication();
+
             app.UseRouting(); // select/decides which endpoint should handle the request
 
             // add custom middleware between routing selection and execution
             app.UseMiddleware<FeatureSwitchMiddleware>();
 
-            app.UseAuthentication();
+
 
             app.UseAuthorization();
 
@@ -282,7 +304,9 @@ namespace Enterprise.Web
 
                 // register endpoints for each razor page in the application
                 endpoints.MapRazorPages();
-
+                endpoints.MapGet("/secret", SecretEndpoint.Endpoint).WithDisplayName("secret");
+                endpoints.Map("/signin", UsersAndClaims.SignIn).WithDisplayName("signin");
+                endpoints.Map("/signout", UsersAndClaims.SignOut).WithDisplayName("signout");
             });
         }
     }
