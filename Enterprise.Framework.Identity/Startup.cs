@@ -9,7 +9,13 @@ namespace Enterprise.Framework.Identity
         {
             services.AddSingleton<ILookupNormalizer, Normalizer>();
             services.AddSingleton<IUserStore<AppUser>, UserStore>();
-            services.AddIdentityCore<AppUser>();
+            services.AddIdentityCore<AppUser>(opts =>
+            {
+                opts.User.AllowedUserNameCharacters = "A-Za-z";
+                opts.User.RequireUniqueEmail = true;
+            });
+
+            services.AddSingleton<IUserValidator<AppUser>, EmailValidator>();
         }
     }
 }
