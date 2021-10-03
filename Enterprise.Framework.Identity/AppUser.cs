@@ -16,5 +16,7 @@ namespace Enterprise.Framework.Identity
         public string PhoneNumber { get; set; }
         public bool PhoneNumberConfirmed { get; set; }
         public IList<Claim> Claims { get; set; }
+        public string SecurityStamp { get; set; }
+        public string PasswordHash { get; set; }
     }
 }

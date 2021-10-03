@@ -3,17 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Enterprise.Framework.Identity
 {
     public partial class UserStore
     {
+        private readonly IPasswordHasher<AppUser> passwordHasher;
+
         public ILookupNormalizer Normalizer { get; set; }
-        public UserStore(ILookupNormalizer normalizer)
+        public UserStore(ILookupNormalizer normalizer, IPasswordHasher<AppUser> passwordHasher)
         {
             this.Normalizer = normalizer;
+            this.passwordHasher = passwordHasher;
             this.SeedStore();
         }
         private void SeedStore()
@@ -32,9 +33,11 @@ namespace Enterprise.Framework.Identity
                     NormalizedEmailAddress = Normalizer.NormalizeEmail(EmailFromName(name)),
                     EmailAddressConfirmed = true,
                     PhoneNumber = "123-4567",
-                    PhoneNumberConfirmed = true
+                    PhoneNumberConfirmed = true,
+                    SecurityStamp = "InitStamp",
                 };
                 user.Claims = UsersAndClaims.UserData[user.UserName].Select(role => new Claim(ClaimTypes.Role, role)).ToList();
+                user.PasswordHash = this.passwordHasher.HashPassword(user, "P@ssw0rd");
                 users.TryAdd(user.Id, user);
             }
         }
