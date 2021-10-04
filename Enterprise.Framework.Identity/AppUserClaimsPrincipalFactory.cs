@@ -6,7 +6,15 @@ namespace Enterprise.Framework.Identity
 {
     public class AppUserClaimsPrincipalFactory : IUserClaimsPrincipalFactory<AppUser>
     {
-        public Task<ClaimsPrincipal> CreateAsync(AppUser user)
+        private readonly UserManager<AppUser> userManager;
+        private readonly RoleManager<AppRole> roleManager;
+
+        public AppUserClaimsPrincipalFactory(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        {
+            this.userManager = userManager;
+            this.roleManager = roleManager;
+        }
+        public async Task<ClaimsPrincipal> CreateAsync(AppUser user)
         {
             ClaimsIdentity identity = new ClaimsIdentity(IdentityConstants.ApplicationScheme);
             identity.AddClaims(new[] {
@@ -19,7 +27,20 @@ namespace Enterprise.Framework.Identity
             {
                 identity.AddClaims(user.Claims);
             }
-            return Task.FromResult(new ClaimsPrincipal(identity));
+
+            if (this.userManager.SupportsUserRole && this.roleManager.SupportsRoleClaims)
+            {
+                foreach (string roleName in await this.userManager.GetRolesAsync(user))
+                {
+                    AppRole role = await this.roleManager.FindByNameAsync(roleName);
+                    if (role != null && role.Claims != null)
+                    {
+                        identity.AddClaims(role.Claims);
+                    }
+                }
+            }
+
+            return new ClaimsPrincipal(identity);
         }
     }
 }
