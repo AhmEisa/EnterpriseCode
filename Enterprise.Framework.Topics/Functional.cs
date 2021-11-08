@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Diagnostics;
+using System.Linq;
 using Unit = System.ValueTuple;
 
 namespace Enterprise.Framework.Topics
@@ -114,4 +115,52 @@ namespace Enterprise.Framework.Topics.ImmutableTypes
         public static implicit operator Option<T>(T value) => value == null ? new Option<T>() : new Option<T>(value);//None : Some(value);
         public R Match<R>(Func<R> None, Func<T, R> Some) => isSome ? Some(value) : None();
     }
+
+    /*
+    *** Pure Functions defined on objects:
+     - class must be immutable
+     - all components must be immutable
+     - method arguments must be immutable
+   
+   *** Benefits of Pure Functions
+       -Same result for the same object and argument
+       - this simplifies the execution model
+       - save us from bugs
+
+  *** Value-Typed semantic
+  *   - must override equals () and gethashcode() methods
+  *   -advised to overload == and != operators
+  *   -advised to implement IEqutable<> interface
+  *   - value class is sealed
+     */
+    public sealed class Currency : IEquatable<Currency>
+    {
+        public string Symbol { get; }
+        private Currency(string symbol)
+        {
+            this.Symbol = symbol;
+        }
+        public static Currency USD = new Currency("USD");
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as Currency);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Symbol.GetHashCode();
+        }
+
+        public static bool operator ==(Currency a, Currency b) => object.ReferenceEquals(a, null) ? object.ReferenceEquals(b, null) : a.Equals(b);
+        public static bool operator !=(Currency a, Currency b) => !(a == b);
+        public bool Equals(Currency other)
+        {
+            throw new NotImplementedException();
+        }
+
+       
+    }
+
+
+
 }

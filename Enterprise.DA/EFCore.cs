@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace Enterprise.DA
 {
@@ -25,4 +26,16 @@ namespace Enterprise.DA
 
     // the source code on : https://github.com/dotnet/efcore
 
+    public class GenericRepository
+    {
+        public void TestFindByKey(int id)
+        {
+            var item = Expression.Parameter(typeof(object), "entity");
+            var property = Expression.Property(item, typeof(object).Name + "Id");
+            var value = Expression.Constant(id);
+            var equal = Expression.Equal(property, value);
+            var lambda = Expression.Lambda<Func<object, bool>>(equal, item);
+            //then pass these to the method
+        }
+    }
 }
