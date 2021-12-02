@@ -1,0 +1,5 @@
+﻿Stripe Setup:
+1.Create Stripe Account
+2.Add Api Keys to Config File
+3.Add Script tags for JS Libraries
+4.Reference Stripe.Net assembly

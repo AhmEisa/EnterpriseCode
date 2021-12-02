@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Enterprise.Try;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -40,7 +41,25 @@ namespace ConsoleApp1
             var root = new TreeNode { Value = 3, Left = new TreeNode { Value = 9 }, Right = new TreeNode { Value = 20, Left = new TreeNode { Value = 15 }, Right = new TreeNode { Value = 7 } } };
             var result = SumOfLeafes(root);
             //Print counter
-            Console.WriteLine("Counter is: {0}", result);
+           // Console.WriteLine("Counter is: {0}", result);
+
+           // var textExtracted = ExtractTextFromFiles.ExtractText(@"D:\Work Files\Techno-Ways\Geidea Gateway_ DirectAPI Guide v1.2.pdf");
+           // Console.WriteLine("Text in pdf : {0}", textExtracted);
+
+            //DocumentStore documentStore = new DocumentStore(2);
+            //documentStore.AddDocument("item");
+            //Console.WriteLine(documentStore);
+
+            ChainLink left = new ChainLink();
+            ChainLink middle = new ChainLink();
+            ChainLink right = new ChainLink();
+            left.Append(middle);
+            middle.Append(right);
+            Console.WriteLine(left.LongerSide());
+
+            CodePerformance.Test();
+           
+
             Console.ReadLine();
         }
 
