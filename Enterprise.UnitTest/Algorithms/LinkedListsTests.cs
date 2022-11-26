@@ -173,5 +173,21 @@ namespace Enterprise.UnitTest.Algorithms
             Assert.NotNull(newList);
             Assert.Equal(1, newList.data);
         }
+
+        [Fact]
+        public void ReverseDobuleLinkedList_Test()
+        {
+            var testData = new int[] { 1, 2, 3, 4 };
+            DoublyLinkedList llist = new DoublyLinkedList();
+            for (int i = 0; i < testData.Length; i++)
+            {
+                llist.InsertNode(testData[i]);
+            }
+
+            var newList = LinkedListSolution.reverse(llist.head);
+
+            Assert.NotNull(newList);
+            Assert.Equal(4, newList.data);
+        }
     }
-}
+    }

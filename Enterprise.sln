@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29326.143
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Web", "Enterprise.Web\Enterprise.Web.csproj", "{A3E0005A-DA1E-4C91-AD20-6272AD493B48}"
 EndProject
@@ -55,11 +55,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enterprise.Framework.Topics
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Framework.Identity", "Enterprise.Framework.Identity\Enterprise.Framework.Identity.csproj", "{6161D618-62DB-490F-869A-A7976F6E79A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enterprise.Algorithms", "Enterprise.Algorithms\Enterprise.Algorithms.csproj", "{414D5937-BEE7-4376-BD76-C90B404AB537}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Algorithms", "Enterprise.Algorithms\Enterprise.Algorithms.csproj", "{414D5937-BEE7-4376-BD76-C90B404AB537}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{92B9A18E-D3D2-40F3-8D2E-3581C963B800}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enterprise.UnitTest", "Enterprise.UnitTest\Enterprise.UnitTest.csproj", "{90352C20-6D77-433D-915B-5BDB0374087B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.UnitTest", "Enterprise.UnitTest\Enterprise.UnitTest.csproj", "{90352C20-6D77-433D-915B-5BDB0374087B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enterprise.Storage", "Enterprise.Storage\Enterprise.Storage.csproj", "{0FE0B238-F514-4677-ADA1-F1645354086F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +155,10 @@ Global
 		{90352C20-6D77-433D-915B-5BDB0374087B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90352C20-6D77-433D-915B-5BDB0374087B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90352C20-6D77-433D-915B-5BDB0374087B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FE0B238-F514-4677-ADA1-F1645354086F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FE0B238-F514-4677-ADA1-F1645354086F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FE0B238-F514-4677-ADA1-F1645354086F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FE0B238-F514-4677-ADA1-F1645354086F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -171,6 +177,7 @@ Global
 		{6161D618-62DB-490F-869A-A7976F6E79A8} = {C80DDFE8-2F79-4059-871E-D333A72581D1}
 		{414D5937-BEE7-4376-BD76-C90B404AB537} = {C80DDFE8-2F79-4059-871E-D333A72581D1}
 		{90352C20-6D77-433D-915B-5BDB0374087B} = {92B9A18E-D3D2-40F3-8D2E-3581C963B800}
+		{0FE0B238-F514-4677-ADA1-F1645354086F} = {C80DDFE8-2F79-4059-871E-D333A72581D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {89A430FA-287F-45B7-91D1-7DAE9BC56E23}

@@ -33,6 +33,40 @@ namespace Enterprise.Try
             }
             Console.WriteLine("Output: " + output);
         }
+
+        public static string ShiftStringCharacters(string input, int numberOfShifts, int startCharValue, int endCharValue)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return input;
+
+            if (input.Any(c => c < startCharValue || c > endCharValue))
+                throw new Exception($"Only {(char)startCharValue}-{(char)endCharValue}  supported.");
+
+            StringBuilder output = new StringBuilder();
+            Dictionary<char, char> cachedChars = new Dictionary<char, char>();
+            
+            for (int i = 0; i < input.Length; i++)
+            {
+                //if (input[i] < startCharValue || input[i] > endCharValue)
+                //{
+                //    throw new Exception($"Only {(char)startCharValue}-{(char)endCharValue}  supported.");
+                //}
+                if (cachedChars.TryGetValue(input[i], out char cachedChar))
+                {
+                    output.Append(cachedChar);
+                    continue;
+                }
+
+                int shifted = input[i] + numberOfShifts;
+                if (shifted > endCharValue)
+                {
+                    shifted = startCharValue + shifted - (endCharValue + 1);
+                }
+
+                output.Append(cachedChars[input[i]] = (char)shifted);
+            }
+
+            return output.ToString();
+        }
     }
     public static class CharactersUtility
     {

@@ -281,7 +281,20 @@ namespace Enterprise.Algorithms
             }
             return llist;
         }
-
+        public static DoublyLinkedListNode reverse(DoublyLinkedListNode llist)
+        {
+            if (llist == null) return llist;
+            var tlist = new DoublyLinkedListNode(llist.data);
+            while (llist.next != null)
+            {
+                var newNode = new DoublyLinkedListNode(llist.next.data);
+                newNode.next = tlist;
+                tlist.prev = newNode;
+                tlist = newNode;
+                llist = llist.next;
+            }
+            return tlist;
+        }
         public static int getNode(SinglyLinkedListNode llist, int positionFromTail)
         {
             if (llist == null) return -1;
