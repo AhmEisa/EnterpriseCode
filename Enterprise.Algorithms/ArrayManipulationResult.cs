@@ -91,4 +91,77 @@ namespace Enterprise.Algorithms
         }
     }
 
+    public class SolutionFairIndex
+    {
+        public int solution(int[] A, int[] B)
+        {
+            int arraysLength = A.Length;
+            double[] aggregatedSumA = new double[arraysLength];
+            double[] aggregatedSumB = new double[arraysLength];
+
+            AggregateArraysSum(A, B, aggregatedSumA, aggregatedSumB);
+
+            int totalFairIndexCount = 0;
+            for (int i = 1; i < arraysLength - 1; i++)
+                if (IsFairIndex(i, aggregatedSumA, aggregatedSumB, arraysLength))
+                    totalFairIndexCount++;
+
+            return totalFairIndexCount;
+        }
+
+        public int solutionB(int N)
+        {
+            int currentNumber = N;
+            while (true)
+            {
+                currentNumber = currentNumber + 1;
+                if (!ContainsConsecutiveDigits(currentNumber.ToString()))
+                { return currentNumber; }
+            }
+        }
+        public int solutionC(int[] A)
+        {
+            List<int> c = new List<int>();
+            for (int i = 1; i < A.Length; i++)
+            {
+                if (A[i-1] % 2 == 0)
+                {
+                    c.Add(0); A[i] = A[i-1] / 2;
+                }
+            }
+            return c.Count(n => n != 0);
+            // Implement your solution here
+        }
+        private bool ContainsConsecutiveDigits(string s)
+        {
+            char currentDigit = s[0];
+            for (int i = 1; i < s.Length; i++)
+            {
+                if (currentDigit == s[i]) return true;
+                currentDigit = s[i];
+            }
+            return false;
+        }
+
+        private void AggregateArraysSum(int[] A, int[] B, double[] aggregatedSumA, double[] aggregatedSumB)
+        {
+            int arraysLength = A.Length;
+            aggregatedSumA[0] = A[0];
+            aggregatedSumB[0] = B[0];
+            for (int i = 1; i < arraysLength; i++)
+            {
+                aggregatedSumA[i] = A[i] + aggregatedSumA[i - 1];
+                aggregatedSumB[i] = B[i] + aggregatedSumB[i - 1];
+            }
+        }
+        private bool IsFairIndex(int k, double[] aggregatedSumA, double[] aggregatedSumB, int arraysLength)
+        {
+            k = k + 1 == arraysLength - 1 ? k + 1 : k;
+            if (aggregatedSumA[k - 1] == aggregatedSumB[k - 1] &&
+                (aggregatedSumA[arraysLength - 1] - aggregatedSumA[k - 1]) == (aggregatedSumB[arraysLength - 1] - aggregatedSumB[k - 1]))
+                return true;
+            return false;
+        }
+    }
+
 }

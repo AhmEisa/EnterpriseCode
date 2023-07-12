@@ -6,6 +6,41 @@ using System.Threading.Tasks;
 
 namespace Enterprise.Algorithms
 {
+    public class MyQueue<T>
+    {
+        internal class QueueNode<T>
+        {
+            public T data;
+            public QueueNode<T> next;
+            public QueueNode(T data)
+            {
+                this.data = data;
+            }
+        }
+
+        private QueueNode<T> _top;
+        private QueueNode<T> _bottom;
+        public T Dequeue()
+        {
+            if (_top == null) throw new NotImplementedException();
+            T item = _top.data;
+            _top = _top.next;
+            return item;
+        }
+        public void Enqueue(T item)
+        {
+            QueueNode<T> oldBottom = _bottom;
+            _bottom = new QueueNode<T>(item);
+            if (IsEmpty()) _top = _bottom;
+            else oldBottom.next = _bottom;
+        }
+        public T Peek()
+        {
+            if (_top == null) throw new NotImplementedException();
+            return _top.data;
+        }
+        public bool IsEmpty() { return _top == null; }
+    }
     public class Queues
     {
         public static void QueueUsingTwoStacks(List<List<string>> operations)
@@ -66,7 +101,7 @@ namespace Enterprise.Algorithms
         private static int GetNextDivisbleNumber(int n)
         {
             int result = 0;
-            
+
             for (int i = (int)Math.Sqrt(n); i >= 2; i--)
             {
                 if (n % i == 0) { result = Math.Max(i, n / i); break; }

@@ -44,7 +44,9 @@
   <ItemGroup>
     <Compile Include="Algorithms.cs" />
     <Compile Include="AsyncParallel.cs" />
-    <Compile Include="FileSystem.cs" />
+    <Compile Include="Crypto.cs" />
+    <Compile Include="Notifications.cs" />
+    <Compile Include="OperationTimer.cs" />
     <Compile Include="Functional.cs" />
     <Compile Include="Monoid.cs" />
     <Compile Include="Streaming.cs" />
