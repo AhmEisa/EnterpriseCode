@@ -111,6 +111,18 @@ namespace ConsoleApp1
             Console.WriteLine(DateTime.UtcNow);
             Console.ReadLine();
         }
+        public static string timeConversion(string s)
+        {
+            var timeParts = s.Split(':');
+            int hourValue = int.Parse(timeParts[0]);
+            int newValue = hourValue;
+            if (s.Contains("PM") && hourValue < 12)
+                newValue = hourValue + 12;
+            if (s.Contains("AM") && hourValue >= 12)
+                newValue = 0;
+            return string.Join(':', string.Format("{0:00}", newValue), timeParts[1], timeParts[2].Replace("PM", string.Empty).Replace("AM", string.Empty));
+        }
+
         static void CalcCominationsOfLettersFromDigits()
         {
             Dictionary<int, List<char>> digitMapping = new Dictionary<int, List<char>>();
