@@ -7,9 +7,11 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ConsoleApp1
 {
@@ -108,8 +110,108 @@ namespace ConsoleApp1
             Console.WriteLine(normal.Contains(CompletionStateType.AtLeastOneTask));
 
 
-            Console.WriteLine(DateTime.UtcNow);
+            //Console.WriteLine(DateTime.UtcNow);
+            //Console.WriteLine((int)'d');
+            //Console.WriteLine((int)'e');
+            //Console.WriteLine((int)'h');
+            //Console.WriteLine((int)'a');
+            //Console.WriteLine("de".GetHashCode());
+            //Console.WriteLine("ha".GetHashCode());
+            //Console.WriteLine(string.Join("", "aaagmnrs".OrderBy(s=>s).Select(r=>r).ToList()));
+            //Console.WriteLine(string.Join("", "anagrams".OrderBy(s => s).Select(r => r).ToList()));
+            //var result = funWithAnagrams2(new List<string> { "code", "aaagmnrs", "anagrams", "doce", "coha" });
+            //Console.WriteLine(string.Join(" - ", result));
+           
             Console.ReadLine();
+        }
+        public static int countPairs(List<int> numbers, int k)
+        {
+            int counts = 0;
+            Dictionary<int, int> pairs = new Dictionary<int, int>();
+            foreach(var item in numbers)
+            {
+                if(pairs.ContainsKey(item))
+                    pairs[item]++;
+                else
+                    pairs.Add(item, 1);
+            }
+            foreach(var kvp in pairs)
+            {
+                if (2 * kvp.Key == k && kvp.Value>1)
+                    counts += 2;
+                else if(pairs.ContainsKey(k-kvp.Key))
+                    counts += 1;
+            }
+            counts = counts / 2;
+            return counts;
+        }
+
+        public static List<string> funWithAnagrams(List<string> text)
+        {
+            Console.WriteLine(string.Join(" - ", text));
+            List<string> output = new List<string>();
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+            foreach (string line in text)
+            {
+                var stringNumber = ConvertStringToNumber(line);
+                if (!dict.ContainsKey(stringNumber))
+                    dict.Add(stringNumber, line);
+            }
+            foreach (var numbString in dict.OrderBy(x => x.Value))
+            {
+                output.Add(numbString.Value);
+            }
+            return output;
+        }
+        public static List<string> funWithAnagrams2(List<string> text)
+        {
+            Console.WriteLine(string.Join(" - ", text));
+            List<string> output = new List<string>();
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            foreach (string line in text)
+            {
+                var sortedString = SortString(line);
+                if (!dict.ContainsKey(sortedString))
+                    dict.Add(sortedString, line);
+            }
+            foreach (var numbString in dict.OrderBy(x => x.Value))
+            {
+                output.Add(numbString.Value);
+            }
+            return output;
+        }
+        private static string SortString(string str)
+        {
+            return string.Join("", str.OrderBy(s => s).Select(r => r).ToList());
+        }
+        private static int ConvertStringToNumber(string str)
+        {
+            return str.Sum(s => 'z' - s);
+        }
+
+        public static string newPassword(string a, string b)
+        {
+            int aLength = a.Length;
+            int bLength = b.Length;
+            int minLength = Math.Min(aLength, bLength);
+            StringBuilder newString = new StringBuilder();
+            for (int index = 0; index < minLength; index++)
+            {
+                newString.Append(string.Format("{0}{1}", a[index], b[index]));
+            }
+            if (aLength > minLength)
+                newString.Append(a.Substring(aLength));
+            else if (bLength > minLength)
+                newString.Append(b.Substring(bLength));
+            return newString.ToString();
+        }
+
+        public static string findNumber(List<int> arr, int k)
+        {
+            string Found = "YES";
+            string NotFound = "No";
+            bool elemfound = arr.Any(x => x == k);
+            return elemfound ? Found : NotFound;
         }
         public static string timeConversion(string s)
         {
