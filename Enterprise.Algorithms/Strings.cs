@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Enterprise.Algorithms
 {
@@ -21,7 +18,7 @@ namespace Enterprise.Algorithms
             {
                 if (string.IsNullOrEmpty(remainedLoginAttempt)) { return string.Join(" ", result); }
                 if (passwords[index].Length > remainedLoginAttempt.Length) { index++; continue; }
-               
+
 
                 string currentElm = passwords[index];
                 string matchedLoginAttempt = remainedLoginAttempt.Substring(0, currentElm.Length);
@@ -34,6 +31,16 @@ namespace Enterprise.Algorithms
                 else { index++; }
             }
             return "WRONG PASSWORD";
+        }
+        public static string timeConversion(string s)
+        {
+            bool PM = s.Contains("PM");
+            bool AM = s.Contains("AM");
+            string[] timeParts = (PM ? s.Replace("PM", "") : s.Replace("AM", "")).Split(":");
+            int hours = int.Parse(timeParts[0]);
+            if (PM && hours != 12) hours += 12;
+            if (AM && hours == 12) hours = 0;
+            return string.Format("{0:00}:{1}:{2}", hours, timeParts[1], timeParts[2]);
         }
     }
 }

@@ -12,5 +12,12 @@ namespace Enterprise.UnitTest.Algorithms
 
             Assert.Equal("we do what we must because we can", result);
         }
+        [Fact]
+        public void Strings_timeConversion()
+        {
+            var result = Strings.timeConversion("07:05:45PM");
+
+            Assert.Equal("19:05:45", result);
+        }
     }
 }

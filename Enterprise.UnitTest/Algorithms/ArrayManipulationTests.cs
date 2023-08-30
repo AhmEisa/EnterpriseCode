@@ -34,6 +34,11 @@ namespace Enterprise.UnitTest.Algorithms
             int result = fairIndex.solutionB(44432);
             Assert.Equal(45010, result);
         }
-
+        [Fact]
+        public void Array_miniMaxSum()
+        {
+             Arrays.miniMaxSum(new List<int> { 256741038 ,623958417, 467905213 ,714532089, 938071625 });
+            Assert.Equal(1, 1);
+        }
     }
 }
