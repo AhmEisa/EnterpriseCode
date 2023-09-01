@@ -58,7 +58,19 @@ namespace Enterprise.Algorithms
          */
         public static int[] TwoSum(int[] nums, int target)
         {
-            return new int[] { };
+            Dictionary<int, int> map = new Dictionary<int, int>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int complement = target - nums[i];
+                if (map.ContainsKey(complement))
+                {
+                    return new int[] { map[complement], i };
+                }
+
+                map[nums[i]] = i;
+            }
+            return new int[0];
         }
         /*
          Input: prices = [7,1,5,3,6,4]
@@ -74,7 +86,23 @@ namespace Enterprise.Algorithms
          */
         public static int MaxProfit(int[] prices)
         {
-            return 0;
+            int lsf = int.MaxValue;
+            int op = 0;
+            int pist;
+
+            for (int i = 0; i < prices.Length; i++)
+            {
+                if (prices[i] < lsf)
+                {
+                    lsf = prices[i];
+                }
+                pist = prices[i] - lsf;
+                if (op < pist)
+                {
+                    op = pist;
+                }
+            }
+            return op;
         }
         /*
          * Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
@@ -94,6 +122,13 @@ namespace Enterprise.Algorithms
          */
         public static bool ContainsDuplicate(int[] nums)
         {
+            Dictionary<int, int> seen = new Dictionary<int, int>();
+            foreach (int num in nums)
+            {
+                if (seen.ContainsKey(num) && seen[num] >= 1)
+                    return true;
+                seen.Add(num, 1);
+            }
             return false;
         }
         /*
@@ -118,7 +153,19 @@ namespace Enterprise.Algorithms
          */
         public static int[] ProductExceptSelf(int[] nums)
         {
-            return new int[] { };
+            int n = nums.Length;
+            int[] ans = new int[n];
+            int pro = 1;
+            foreach (int i in nums)
+            {
+                pro *= i;
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                ans[i] = pro / nums[i];
+            }
+            return ans;
         }
 
         /*
@@ -144,7 +191,14 @@ namespace Enterprise.Algorithms
          */
         public static int MaxSubArray(int[] nums)
         {
-            return 0;
+            int maxEnding = nums[0];
+            int max = nums[0];
+            for (int i = 1; nums.Length > i; i++)
+            {
+                maxEnding = Math.Max(nums[i], maxEnding + nums[i]);
+                max = Math.Max(max, maxEnding);
+            }
+            return max;
         }
 
         /*
@@ -170,7 +224,17 @@ namespace Enterprise.Algorithms
          */
         public static int MaxProduct(int[] nums)
         {
-            return 0;
+            int ans = nums[0];
+            int n = nums.Count();
+            int p = 1, q = 1;
+            for (int i = 0; i < n; i++)
+            {
+                // reset to 1 when the product becomes zero
+                p = (p == 0 ? 1 : p) * nums[i];
+                q = (q == 0 ? 1 : q) * nums[n - 1 - i];
+                ans = Math.Max(ans, Math.Max(p, q));
+            }
+            return ans;
         }
 
         /*
@@ -315,7 +379,45 @@ namespace Enterprise.Algorithms
          */
         public static IList<IList<int>> ThreeSum(int[] nums)
         {
-            return null; 
+            List<IList<int>> output = new List<IList<int>>();
+            Array.Sort(nums);
+
+            if ((nums[0] >= 0 && nums[nums.Length - 1] != 0) || nums[nums.Length - 1] < 0)
+            {
+                return new List<IList<int>>();
+            }
+
+
+            for (int index = 0; index < nums.Length; index++)
+            {
+                int num = nums[index];
+
+                if (index > 0 && num == nums[index - 1]) continue;
+
+                if (num > 0) break;
+
+                int left = index + 1;
+                int right = nums.Length - 1;
+
+                while (left < right)
+                {
+                    int threeSum = num + nums[left] + nums[right];
+
+                    if (threeSum > 0) right--;
+                    else if (threeSum < 0) left++;
+                    else
+                    {
+                        IList<int> new_array = new List<int>() { nums[index], nums[left], nums[right] };
+                        output.Add(new_array);
+                        left++;
+                        while (nums[left] == nums[left - 1] && left < right)
+                        {
+                            left++;
+                        }
+                    }
+                }
+            }
+            return output;
         }
 
         /*
@@ -332,5 +434,427 @@ namespace Enterprise.Algorithms
             the container can contain is 49.
 
          */
+
+        /*
+         Example 1:
+
+        Input: nums = [1,1,0,1,1,1]
+        Output: 3
+        Explanation: The first two digits or the last three digits are consecutive 1s. The maximum number of consecutive 1s  is 3
+         */
+        public static int FindMaxConsecutiveOnes(int[] nums)
+        {
+            int maxConsecutiveOnes = 0;
+            int currentOnesCount = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] == 1) currentOnesCount += 1;
+                else { maxConsecutiveOnes = Math.Max(currentOnesCount, maxConsecutiveOnes); currentOnesCount = 0; }
+            }
+            return Math.Max(currentOnesCount, maxConsecutiveOnes);
+        }
+        public static int FindMaxConsecutiveOnes_2(int[] nums)
+        {
+            int n = nums.Length;
+            int max = 0, left = 0, right = 0;
+            while (left < n && right < n)
+            {
+                while (left < n && nums[left] == 0)
+                    left++;
+                right = left;
+                while (right < n && nums[right] == 1)
+                    right++;
+                max = Math.Max(max, right - left);
+                left = right;
+            }
+            return max;
+        }
+        public static int FindMaxConsecutiveOnes_3(int[] nums)
+        {
+            int m = nums[0];
+            for (int i = 1; i < nums.Length; i++)
+            {
+                nums[i] = nums[i] * (nums[i] + nums[i - 1]);
+                m = Math.Max(nums[i], m);
+            }
+            return m;
+        }
+
+        /*
+         Given an array nums of integers, return how many of them contain an even number of digits.
+        Input: nums = [12,345,2,6,7896]
+        Output: 2
+        Explanation: 
+        12 contains 2 digits (even number of digits). 
+        345 contains 3 digits (odd number of digits). 
+        2 contains 1 digit (odd number of digits). 
+        6 contains 1 digit (odd number of digits). 
+        7896 contains 4 digits (even number of digits). 
+        Therefore only 12 and 7896 contain an even number of digits.
+         */
+        public static int FindNumbers(int[] nums)
+        {
+            int numberWithEvenDigitsCount = 0;
+            for (int i = 0; i < nums.Length; i++)
+                if (IsEvenNumberOfDigitsInNumber(nums[i]))
+                    numberWithEvenDigitsCount++;
+            return numberWithEvenDigitsCount;
+        }
+        private static bool IsEvenNumberOfDigitsInNumber(int num)
+        {
+            int result = 0;
+            while (num > 0)
+            {
+                num /= 10;
+                result++;
+            }
+            return result % 2 == 0;
+        }
+        /*
+         Given an integer array nums sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.
+
+ 
+
+        Example 1:
+
+        Input: nums = [-4,-1,0,3,10]
+        Output: [0,1,9,16,100]
+        Explanation: After squaring, the array becomes [16,1,0,9,100].
+        After sorting, it becomes [0,1,9,16,100].
+        Example 2:
+
+        Input: nums = [-7,-3,2,3,11]
+        Output: [4,9,9,49,121]
+         */
+        public static int[] SortedSquares(int[] nums)
+        {
+            int[] result = new int[nums.Length];
+            for (int i = 0; i < nums.Length; i++)
+            {
+                result[i] = nums[i] * nums[i];
+            }
+            Array.Sort(result);
+            return result;
+        }
+        public static int[] SortedSquares_2(int[] nums)
+        {
+            int n = nums.Length;
+            int[] result = new int[n];
+            int left = 0;
+            int right = n - 1;
+
+            for (int i = n - 1; i >= 0; i--)
+            {
+                int square;
+                if (Math.Abs(nums[left]) < Math.Abs(nums[right]))
+                {
+                    square = nums[right];
+                    right--;
+                }
+                else
+                {
+                    square = nums[left];
+                    left++;
+                }
+                result[i] = square * square;
+            }
+            return result;
+        }
+        /*
+         Given a fixed-length integer array arr, duplicate each occurrence of zero, shifting the remaining elements to the right.
+
+        Note that elements beyond the length of the original array are not written. Do the above modifications to the input array in place and do not return anything.
+
+ 
+
+        Example 1:
+
+        Input: arr = [1,0,2,3,0,4,5,0]
+        Output: [1,0,0,2,3,0,0,4]
+        Explanation: After calling your function, the input array is modified to: [1,0,0,2,3,0,0,4]
+        Example 2:
+
+        Input: arr = [1,2,3]
+        Output: [1,2,3]
+        Explanation: After calling your function, the input array is modified to: [1,2,3]
+         */
+        public static void DuplicateZeros(int[] arr)
+        {
+            if (arr == null || arr.Length == 0) return;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] == 0)
+                {
+                    ShiftArrayToRightOfIndex(arr, i);
+                    i++; // we don't want to traverse over the duplicate zero
+                }
+            }
+        }
+
+        private static void ShiftArrayToRightOfIndex(int[] arr, int index)
+        {
+            for (int j = arr.Length - 1; j > index; j--)
+            {
+                arr[j] = arr[j - 1];
+            }
+        }
+        public static void duplicateZeros(int[] arr)
+        {
+            int possibleDups = 0;
+            int length_ = arr.Length - 1;
+
+            // Find the number of zeros to be duplicated
+            // Stopping when left points beyond the last element in the original array
+            // which would be part of the modified array
+            for (int left = 0; left <= length_ - possibleDups; left++)
+            {
+                // Count the zeros
+                if (arr[left] == 0)
+                {
+                    // Edge case: This zero can't be duplicated. We have no more space,
+                    // as left is pointing to the last element which could be included  
+                    if (left == length_ - possibleDups)
+                    {
+                        // For this zero we just copy it without duplication.
+                        arr[length_] = 0;
+                        length_ -= 1;
+                        break;
+                    }
+                    possibleDups++;
+                }
+            }
+
+            // Start backwards from the last element which would be part of new array.
+            int last = length_ - possibleDups;
+
+            // Copy zero twice, and non zero once.
+            for (int i = last; i >= 0; i--)
+            {
+                if (arr[i] == 0)
+                {
+                    arr[i + possibleDups] = 0;
+                    possibleDups--;
+                    arr[i + possibleDups] = 0;
+                }
+                else
+                {
+                    arr[i + possibleDups] = arr[i];
+                }
+            }
+        }
+        /*
+         You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
+
+            Merge nums1 and nums2 into a single array sorted in non-decreasing order.
+
+            The final sorted array should not be returned by the function, but instead be stored inside the array nums1. To accommodate this, nums1 has a length of m + n, where the first m elements denote the elements that should be merged, and the last n elements are set to 0 and should be ignored. nums2 has a length of n.
+
+ 
+
+            Example 1:
+
+            Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+            Output: [1,2,2,3,5,6]
+            Explanation: The arrays we are merging are [1,2,3] and [2,5,6].
+            The result of the merge is [1,2,2,3,5,6] with the underlined elements coming from nums1.
+            Example 2:
+
+            Input: nums1 = [1], m = 1, nums2 = [], n = 0
+            Output: [1]
+            Explanation: The arrays we are merging are [1] and [].
+            The result of the merge is [1].
+            Example 3:
+
+            Input: nums1 = [0], m = 0, nums2 = [1], n = 1
+            Output: [1]
+            Explanation: The arrays we are merging are [] and [1].
+            The result of the merge is [1].
+            Note that because m = 0, there are no elements in nums1. The 0 is only there to ensure the merge result can fit in  nums1.
+                     */
+        public static void merge(int[] nums1, int m, int[] nums2, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                nums1[i + m] = nums2[i];
+            }
+            Array.Sort(nums1);
+        }
+        public static void merge_2(int[] nums1, int m, int[] nums2, int n)
+        {
+            // Make a copy of the first m elements of nums1.
+            int[] nums1Copy = new int[m];
+            for (int i = 0; i < m; i++)
+            {
+                nums1Copy[i] = nums1[i];
+            }
+
+            // Read pointers for nums1Copy and nums2 respectively.
+            int p1 = 0;
+            int p2 = 0;
+
+            // Compare elements from nums1Copy and nums2 and write the smallest to nums1.
+            for (int p = 0; p < m + n; p++)
+            {
+                // We also need to ensure that p1 and p2 aren't over the boundaries
+                // of their respective arrays.
+                if (p2 >= n || (p1 < m && nums1Copy[p1] < nums2[p2]))
+                {
+                    nums1[p] = nums1Copy[p1++];
+                }
+                else
+                {
+                    nums1[p] = nums2[p2++];
+                }
+            }
+        }
+        public static void Merge(int[] nums1, int m, int[] nums2, int n)
+        {
+            int p1 = m - 1;
+            int p2 = n - 1;
+
+            // And move p backwards through the array, each time writing
+            // the smallest value pointed at by p1 or p2.
+            for (int p = m + n - 1; p >= 0; p--)
+            {
+                if (p2 < 0)
+                {
+                    break;
+                }
+                if (p1 >= 0 && nums1[p1] > nums2[p2])
+                {
+                    nums1[p] = nums1[p1--];
+                }
+                else
+                {
+                    nums1[p] = nums2[p2--];
+                }
+            }
+        }
+
+        /*
+         Given an integer array nums and an integer val, remove all occurrences of val in nums in-place. The order of the elements may be changed. Then return the number of elements in nums which are not equal to val.
+
+        Consider the number of elements in nums which are not equal to val be k, to get accepted, you need to do the following things:
+
+        Change the array nums such that the first k elements of nums contain the elements which are not equal to val. The remaining elements of nums are not important as well as the size of nums.
+        Return k.
+         */
+        public static int RemoveElement(int[] nums, int val)
+        {
+            int last = nums.Length;
+            for (int p = 0; p < last;)
+            {
+                if (nums[p] == val)
+                {
+                    nums[p] = nums[last - 1];
+                    last--;
+                }
+                else { p++; }
+
+            }
+            return last;
+        }
+        public static int removeElement(int[] nums, int val)
+        {
+            int i = 0;
+            for (int j = 0; j < nums.Length; j++)
+            {
+                if (nums[j] != val)
+                {
+                    nums[i] = nums[j];
+                    i++;
+                }
+            }
+            return i;
+        }
+        /*
+         Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Then return the number of unique elements in nums.
+
+            Consider the number of unique elements of nums to be k, to get accepted, you need to do the following things:
+
+            Change the array nums such that the first k elements of nums contain the unique elements in the order they were present in nums initially. The remaining elements of nums are not important as well as the size of nums.
+            Return k.
+         */
+        public static int RemoveDuplicates(int[] nums)
+        {
+            int left = 0, right = 1;
+            while (right < nums.Length)
+            {
+                if (nums[right] == nums[left]) { right++; }
+                else { nums[left + 1] = nums[right++]; left++; }
+            }
+            return left + 1;
+        }
+
+        /*
+         Given an array arr of integers, check if there exist two indices i and j such that :
+
+            i != j
+            0 <= i, j < arr.length
+            arr[i] == 2 * arr[j]
+ 
+
+            Example 1:
+
+            Input: arr = [10,2,5,3]
+            Output: true
+            Explanation: For i = 0 and j = 2, arr[i] == 10 == 2 * 5 == 2 * arr[j]
+            Example 2:
+
+            Input: arr = [3,1,7,11]
+            Output: false
+            Explanation: There is no i and j that satisfy the conditions.
+         */
+        public static bool CheckIfExist(int[] arr)
+        {
+            Dictionary<int, int> pairs = new Dictionary<int, int>();
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] % 2 == 0 && pairs.ContainsKey(arr[i] / 2) || pairs.ContainsKey(arr[i] * 2)) return true;
+                if (!pairs.ContainsKey(arr[i])) { pairs.Add(arr[i], i); }
+            }
+            return false;
+        }
+        /*
+         Given an array of integers arr, return true if and only if it is a valid mountain array.
+
+        Recall that arr is a mountain array if and only if:
+
+        arr.length >= 3
+        There exists some i with 0 < i < arr.length - 1 such that:
+        arr[0] < arr[1] < ... < arr[i - 1] < arr[i]
+        arr[i] > arr[i + 1] > ... > arr[arr.length - 1]
+         */
+        public static bool ValidMountainArray(int[] arr)
+        {
+            int i = 0;
+            while (i + 1 < arr.Length && arr[i] < arr[i + 1])
+                i++;
+            if (i == 0 || i == arr.Length - 1) return false;
+
+            while (i + 1 < arr.Length && arr[i] > arr[i + 1])
+                i++;
+
+            return i == arr.Length - 1;
+        }
+
+        /*
+         Given an array arr, replace every element in that array with the greatest element among the elements to its right, and replace the last element with -1.
+
+            After doing so, return the array.
+         */
+        public static int[] ReplaceElements(int[] arr)
+        {
+            Dictionary<int, int> pairs = new Dictionary<int, int>();
+            pairs.Add(arr.Length - 1, arr[arr.Length - 1]);
+            for (int i = arr.Length - 2; i > 0; i--)
+            {
+                pairs.Add(i, Math.Max(pairs[i + 1], arr[i]));
+            }
+            for (int i = 0; i < arr.Length - 1; i++)
+                arr[i] = pairs[i + 1];
+            arr[arr.Length - 1] = -1;
+            return arr;
+        }
     }
 }

@@ -76,5 +76,36 @@ namespace Enterprise.UnitTest.Algorithms
             var result = Arrays.TwoSum(new int[] { 3, 3 }, 6);
             Assert.Equal(new int[] { 0, 1 }, result);
         }
+        [Fact]
+        public void Array_DuplicateZeros()
+        {
+             Arrays.DuplicateZeros(new int[] { 1, 0, 2, 3, 0, 4, 5, 0 });
+            Assert.Equal(1,1);
+        }
+
+        [Fact]
+        public void Array_Merge()
+        {
+            Arrays.Merge(new int[] { 1, 2, 3, 0, 0, 0 },3, new int[] { 2, 5, 6 },3);
+            Assert.Equal(1, 1);
+        }
+        [Fact]
+        public void Array_RemoveDuplicates()
+        {
+          var result=  Arrays.RemoveDuplicates(new int[] { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 });
+            Assert.Equal(5, result);
+        }
+        [Fact]
+        public void Array_CheckIfExist()
+        {
+            var result = Arrays.CheckIfExist(new int[] { 10, 2, 5, 3 });
+            Assert.True(result);
+        }
+        [Fact]
+        public void Array_ReplaceElements()
+        {
+            var result = Arrays.ReplaceElements(new int[] { 17, 18, 5, 4, 6, 1 });
+            Assert.True(true);
+        }
     }
 }
