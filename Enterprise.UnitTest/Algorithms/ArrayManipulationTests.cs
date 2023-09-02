@@ -79,20 +79,20 @@ namespace Enterprise.UnitTest.Algorithms
         [Fact]
         public void Array_DuplicateZeros()
         {
-             Arrays.DuplicateZeros(new int[] { 1, 0, 2, 3, 0, 4, 5, 0 });
-            Assert.Equal(1,1);
+            Arrays.DuplicateZeros(new int[] { 1, 0, 2, 3, 0, 4, 5, 0 });
+            Assert.Equal(1, 1);
         }
 
         [Fact]
         public void Array_Merge()
         {
-            Arrays.Merge(new int[] { 1, 2, 3, 0, 0, 0 },3, new int[] { 2, 5, 6 },3);
+            Arrays.Merge(new int[] { 1, 2, 3, 0, 0, 0 }, 3, new int[] { 2, 5, 6 }, 3);
             Assert.Equal(1, 1);
         }
         [Fact]
         public void Array_RemoveDuplicates()
         {
-          var result=  Arrays.RemoveDuplicates(new int[] { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 });
+            var result = Arrays.RemoveDuplicates(new int[] { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 });
             Assert.Equal(5, result);
         }
         [Fact]
@@ -106,6 +106,31 @@ namespace Enterprise.UnitTest.Algorithms
         {
             var result = Arrays.ReplaceElements(new int[] { 17, 18, 5, 4, 6, 1 });
             Assert.True(true);
+        }
+
+        [Fact]
+        public void Array_PivotIndex()
+        {
+            var result = Arrays.PivotIndex_2(new int[] { 1, 7, 3, 6, 5, 6 });
+            Assert.Equal(3, result);
+        }
+        [Fact]
+        public void Array_DominantIndex()
+        {
+            var result = Arrays.DominantIndex(new int[] { 3, 6, 1, 0 });
+            Assert.Equal(1, result);
+        }
+        [Fact]
+        public void Array_PlusOne()
+        {
+            var result = Arrays.PlusOne(new int[] { 9 });
+            Assert.Equal(new int[] { 1, 0 }, result);
+        }
+        [Fact]
+        public void Array_PlusOne_2()
+        {
+            var result = Arrays.PlusOne(new int[] { 6, 1, 4, 5, 3, 9, 0, 1, 9, 5, 1, 8, 6, 7, 0, 5, 5, 4, 3 });
+            Assert.Equal(new int[] { 6, 1, 4, 5, 3, 9, 0, 1, 9, 5, 1, 8, 6, 7, 0, 5, 5, 4, 4 }, result);
         }
     }
 }

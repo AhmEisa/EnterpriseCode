@@ -856,5 +856,83 @@ namespace Enterprise.Algorithms
             arr[arr.Length - 1] = -1;
             return arr;
         }
+        /*
+         Given an array of integers nums, calculate the pivot index of this array.
+
+        The pivot index is the index where the sum of all the numbers strictly to the left of the index is equal to the sum of all the numbers strictly to the index's right.
+
+        If the index is on the left edge of the array, then the left sum is 0 because there are no elements to the left. This also applies to the right edge of the array.
+
+        Return the leftmost pivot index. If no such index exists, return -1.
+         */
+        public static int PivotIndex(int[] nums)
+        {
+            int[] aggregatedLeftSums = new int[nums.Length];
+            int[] aggregatedRightSums = new int[nums.Length];
+            int lastIndex = nums.Length - 1;
+            aggregatedLeftSums[0] = nums[0];
+            aggregatedRightSums[lastIndex] = nums[lastIndex];
+            for (int i = 1; i < nums.Length; i++)
+            {
+                aggregatedLeftSums[i] = aggregatedLeftSums[i - 1] + nums[i];
+                aggregatedRightSums[lastIndex - i] = aggregatedRightSums[lastIndex - i + 1] + nums[lastIndex - i];
+            }
+            for (int i = 0; i < nums.Length; i++)
+            { if (aggregatedLeftSums[i] == aggregatedRightSums[i]) return i; }
+            return -1;
+        }
+        public static int PivotIndex_2(int[] nums)
+        {
+            int leftSum = 0, totalSum = 0;
+            foreach (int item in nums) totalSum += item;
+            for (int i = 0; i < nums.Length; i++)
+            { if (leftSum == totalSum - leftSum - nums[i]) return i; leftSum += nums[i]; }
+            return -1;
+        }
+
+        /*
+         You are given an integer array nums where the largest integer is unique.
+         Determine whether the largest element in the array is at least twice as much as every other number in the array. If it is, return the index of the largest element, or return -1 otherwise.
+         */
+        public static int DominantIndex(int[] nums)
+        {
+            int largestElementIndex = 0;
+            int largestValue = nums[0];
+            for (int i = 1; i < nums.Length; i++) { if (nums[i] > largestValue) { largestValue = nums[i]; largestElementIndex = i; } }
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (i == largestElementIndex) continue;
+                if (nums[i] * 2 > largestValue) return -1;
+            }
+            return largestElementIndex;
+        }
+
+        /*
+         You are given a large integer represented as an integer array digits, where each digits[i] is the ith digit of the integer. The digits are ordered from most significant to least significant in left-to-right order. The large integer does not contain any leading 0's.
+
+         Increment the large integer by one and return the resulting array of digits.
+         */
+        public static int[] PlusOne(int[] digits)
+        {
+            for (int i = digits.Length - 1; i >= 0; i--)
+            {
+                if (digits[i] == 9) digits[i] = 0;
+                else { digits[i]++; return digits; }
+            }
+            int[] result = new int[digits.Length + 1];
+            result[0] = 1;
+            return result;
+        }
+        private static double GetLargeInteger(int[] digits)
+        {
+            double result = 0;
+            int powerIndex = 0;
+            for (int i = digits.Length - 1; i >= 0; i--)
+            {
+                result += digits[i] * Math.Pow(10, powerIndex);
+                powerIndex++;
+            }
+            return result;
+        }
     }
 }
