@@ -26,5 +26,22 @@ namespace Enterprise.UnitTest.Algorithms
             var result = BinaryExponentiation.BinaryBower(basenumber, bower);
             Assert.Equal(expectedResult, result);
         }
+
+        [Fact]
+        public void BitManipulation_TurnOffRightMost1Bit()
+        {
+            int x = 18;
+            var result = x & (x - 1);
+            Assert.True(result % 2 == 0);
+            Assert.Equal(16, result);
+        }
+        [Fact]
+        public void BitManipulation_TurnONRightMost0Bit()
+        {
+            int x = 18;
+            var result = x | (x + 1);
+            Assert.True(result % 2 == 0);
+            Assert.Equal(16, result);
+        }
     }
 }

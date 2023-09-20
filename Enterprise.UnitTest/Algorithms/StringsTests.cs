@@ -8,7 +8,7 @@ namespace Enterprise.UnitTest.Algorithms
         [Fact]
         public void DownToZero_Test()
         {
-            var result = Strings.passwordCracker(new System.Collections.Generic.List<string> { "because" ,"can" ,"do", "must", "we", "what" }, "wedowhatwemustbecausewecan");
+            var result = Strings.passwordCracker(new System.Collections.Generic.List<string> { "because", "can", "do", "must", "we", "what" }, "wedowhatwemustbecausewecan");
 
             Assert.Equal("we do what we must because we can", result);
         }
@@ -18,6 +18,14 @@ namespace Enterprise.UnitTest.Algorithms
             var result = Strings.timeConversion("07:05:45PM");
 
             Assert.Equal("19:05:45", result);
+        }
+
+        [Fact]
+        public void Strings_LongestCommonPrefix()
+        {
+            var result = Strings.LongestCommonPrefix(new string[] { "flower", "flow", "flight" });
+
+            Assert.Equal("l", result);
         }
     }
 }
