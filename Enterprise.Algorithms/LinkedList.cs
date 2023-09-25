@@ -427,6 +427,26 @@ namespace Enterprise.Algorithms
             textWriter.Flush();
             textWriter.Close();
         }
+        public class ListNode
+        {
+            public int val;
+            public ListNode next;
+            public ListNode(int val = 0, ListNode next = null)
+            {
+                this.val = val;
+                this.next = next;
+            }
+        }
+        public static ListNode SwapPairs(ListNode head)
+        {
+            if (head == null || head.next == null) return head;
+            ListNode tail = SwapPairs(head.next.next);
+
+            ListNode newHead = head.next;
+            head.next = tail;
+            newHead.next = head;
+            return newHead;
+        }
     }
 }
 

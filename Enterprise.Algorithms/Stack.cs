@@ -78,6 +78,51 @@ namespace Enterprise.Algorithms
 
             return isopenBracketsStackUsed && openBracketsStack.Count == 0 ? "YES" : "NO";
         }
+        public bool IsValid(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return true;
+            Dictionary<char, char> closedCharsMap = new Dictionary<char, char> { { ')', '(' }, { '}', '{' }, { ']', '[' } };
+            Stack<char> opendChars = new Stack<char>();
+            foreach (char item in s)
+            {
+                if (closedCharsMap.ContainsKey(item))
+                {
+                    char openedChar = closedCharsMap[item];
+                    if (opendChars.Count == 0) return false;
+                    char topChar = opendChars.Pop();
+                    if (openedChar != topChar) return false;
+                }
+                else { opendChars.Push(item); }
+            }
+            return opendChars.Count == 0;
+        }
+        public int EvalRPN(string[] tokens)
+        {
+            string[] opTokens = new string[] { "+", "-", "*", "/" };
+            Stack<int> opStack = new Stack<int>();
+            foreach (string item in tokens)
+            {
+                if (!opTokens.Contains(item)) opStack.Push(int.Parse(item));
+                else
+                {
+                    opStack.Push(CalculateOp(opStack.Pop(), opStack.Pop(), item));
+                }
+            }
+            return opStack.Pop();
+        }
+
+        private int CalculateOp(int v1, int v2, string op)
+        {
+            switch (op)
+            {
+                case "+": return v1 + v2;
+                case "-": return v2 - v1;
+                case "*": return v1 * v2;
+                case "/": return v2 / v1;
+                default: return 0;
+            }
+        }
+
         public static List<int> getMax(List<string> operations)
         {
             var result = new List<int>();
@@ -319,7 +364,7 @@ namespace Enterprise.Algorithms
                     var numberOfCharactersToDelete = Convert.ToInt32(op[1]);
                     text = stackOperations.Peek().Substring(0, stackOperations.Peek().Length - numberOfCharactersToDelete);
                     stackOperations.Push(text);
-                    cachedValues .Clear();
+                    cachedValues.Clear();
                 }
                 else if (operationType == 3)
                 {

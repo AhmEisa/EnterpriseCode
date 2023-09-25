@@ -112,5 +112,50 @@ namespace Enterprise.Algorithms
                 result.Add(levelResult);
             }
         }
+
+        public int MaxDepth(TreeNode root)
+        {
+            if (root == null) { return 0; }
+            int leftAns = MaxDepth(root.left);
+            int rightAns = MaxDepth(root.right);
+            return Math.Max(leftAns, rightAns) + 1;
+        }
+        public bool IsSymmetric(TreeNode root)
+        {
+            return IsMirror(root.left, root.right);
+        }
+        public bool ItIsSymmetric(TreeNode root)
+        {
+            Queue<TreeNode> nodes = new Queue<TreeNode>();
+            nodes.Enqueue(root.left);
+            nodes.Enqueue(root.right);
+            while (nodes.Count > 0)
+            {
+                var leftTree = nodes.Dequeue();
+                var rightTree = nodes.Dequeue();
+                if (leftTree == null && rightTree == null) { continue; }
+                if (leftTree == null || rightTree == null) { return false; }
+                if(leftTree.val == rightTree.val) { return false; }
+                nodes.Enqueue(leftTree.left);
+                nodes.Enqueue(rightTree.right);
+                nodes.Enqueue(leftTree.right);
+                nodes.Enqueue(rightTree.left);
+            }
+            return true;
+        }
+        private bool IsMirror(TreeNode leftTree, TreeNode rightTree)
+        {
+            if (leftTree == null && rightTree == null) { return true; }
+            if (leftTree == null || rightTree == null) { return false; }
+            return leftTree.val == rightTree.val && IsMirror(leftTree.left, rightTree.right) && IsMirror(leftTree.right, rightTree.left);
+        }
+        public bool HasPathSum(TreeNode root, int targetSum)
+        {
+
+        }
+        public int CountUnivalSubtrees(TreeNode root)
+        {
+
+        }
     }
 }
