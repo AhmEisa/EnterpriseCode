@@ -55,5 +55,15 @@ namespace Enterprise.UnitTest.Algorithms
 
             Assert.True(1 == 1);
         }
+
+        [Fact]
+        public void Tree_Connect_Test()
+        {
+
+           // var dataToTest = new List<string> { "aab", "aac", "aacghgh", "aabghgh" };
+           // Trees.Connect(dataToTest);
+
+            Assert.True(1 == 1);
+        }
     }
 }

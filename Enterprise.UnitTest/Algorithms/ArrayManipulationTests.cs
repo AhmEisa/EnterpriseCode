@@ -132,5 +132,60 @@ namespace Enterprise.UnitTest.Algorithms
             var result = Arrays.PlusOne(new int[] { 6, 1, 4, 5, 3, 9, 0, 1, 9, 5, 1, 8, 6, 7, 0, 5, 5, 4, 3 });
             Assert.Equal(new int[] { 6, 1, 4, 5, 3, 9, 0, 1, 9, 5, 1, 8, 6, 7, 0, 5, 5, 4, 4 }, result);
         }
+
+        [Fact]
+        public void Array_SortArray()
+        {
+            var result = Arrays.SortArray(new int[] { 5, 2, 3, 1 });
+            Assert.Equal(new int[] { 1, 2, 3, 5 }, result);
+        }
+        [Fact]
+        public void Array_SortArray2()
+        {
+            var result = Arrays.SortArray(new int[] { 5, 1, 1, 2, 0, 0, 0 });
+            Assert.Equal(new int[] { 0, 0, 0, 1, 1, 2, 5 }, result);
+        }
+    }
+    public class NumbersManipulationTests
+    {
+        [Fact]
+        public void NormalSum_Test()
+        {
+            var result = Numbers.NormalSum(uint.MaxValue, uint.MaxValue);
+            Assert.Equal(4294967294, result);
+        }
+        [Fact]
+        public void NormalSum_Test_2()
+        {
+            //٤,٢٩٤,٩٦٧,٢٩٤
+            var result = Numbers.NormalSum(int.MaxValue, int.MaxValue);
+            Assert.Equal(-2, result);
+        }
+
+        [Fact]
+        public void MyCircularQueue_Test_()
+        {
+            MyCircularQueue queue = new MyCircularQueue(3);
+            queue.EnQueue(1);
+            queue.EnQueue(2);
+            queue.EnQueue(3);
+            bool isOk = queue.EnQueue(4);
+            int rearValue = queue.Rear();
+            Assert.False(isOk);
+            Assert.Equal(3, rearValue);
+        }
+        [Fact]
+        public void MinStack_Test_()
+        {
+            MinStack stack = new MinStack();
+            stack.Push(-2);
+            stack.Push(0);
+            stack.Push(-3);
+            int minValue = stack.GetMin();
+            Assert.Equal(-3, minValue);
+             stack.Pop();
+            minValue = stack.GetMin();
+            Assert.Equal(-2, minValue);
+        }
     }
 }

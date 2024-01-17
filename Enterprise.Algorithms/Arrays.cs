@@ -937,9 +937,134 @@ namespace Enterprise.Algorithms
             return result;
         }
 
+        public static int[] SortArray(int[] nums)
+        {
+            if (nums.Length <= 1) return nums;
+            int pivot = nums.Length / 2;
+            int[] leftArray = new int[pivot], rightArray = new int[nums.Length - pivot];
+            Array.Copy(nums, 0, leftArray, 0, pivot);
+            Array.Copy(nums, pivot, rightArray, 0, nums.Length - pivot);
+            int[] leftResult = SortArray(leftArray); //// divide & conqer
+            int[] rightResult = SortArray(rightArray);//// divide & conqer
+            return Merge(leftResult, rightResult); // Combine
+        }
 
-
+        private static int[] Merge(int[] leftResult, int[] rightResult)
+        {
+            int left_index = 0, right_index = 0, curr_index = 0;
+            int[] ret = new int[leftResult.Length + rightResult.Length];
+            while (left_index < leftResult.Length && right_index < rightResult.Length)
+            {
+                if (leftResult[left_index] < rightResult[right_index]) { ret[curr_index++] = leftResult[left_index++]; }
+                else { ret[curr_index++] = rightResult[right_index++]; }
+            }
+            while (left_index < leftResult.Length)
+            {
+                ret[curr_index++] = leftResult[left_index++];
+            }
+            while (right_index < rightResult.Length)
+            {
+                ret[curr_index++] = rightResult[right_index++];
+            }
+            return ret;
+        }
     }
+    public class MyCircularQueue
+    {
 
+        private int[] _queue;
+        private int _front = -1, _rear = -1;
+        public MyCircularQueue(int k)
+        {
+            _queue = new int[k];
+        }
+
+        public bool EnQueue(int value)
+        {
+            if (IsFull()) return false;
+            _rear = (_rear + 1) % _queue.Length;
+            _queue[_rear] = value;
+            return true;
+        }
+
+        public bool DeQueue()
+        {
+            if (IsEmpty()) return false;
+            _front = _front == -1 ? 0 : _front;
+            _front = (_front + 1) % _queue.Length;
+            return true;
+        }
+
+        public int Front()
+        {
+            return _queue[_front];
+        }
+
+        public int Rear()
+        {
+            return _queue[_rear];
+        }
+
+        public bool IsEmpty()
+        {
+            return _front == _rear;
+        }
+
+        public bool IsFull()
+        {
+            return _front == (_rear + 1) % _queue.Length;
+        }
+    }
+    public class MovingAverage
+    {
+        private Queue<int> _window;
+        private int _size = 0;
+        public MovingAverage(int size)
+        {
+            _window = new Queue<int>();
+            _size = size;
+        }
+
+        public double Next(int val)
+        {
+            if (_window.Count != 0 && _window.Count >= _size) _window.Dequeue();
+            _window.Enqueue(val);
+            int sum = 0;
+            foreach (var item in _window) { sum += item; }
+            return sum / (double)_window.Count;
+        }
+    }
+    public class MinStack
+    {
+        private Stack<(int, int)> _stack;
+        public MinStack()
+        {
+            _stack = new Stack<(int, int)>();
+        }
+
+        public void Push(int val)
+        {
+            int top = _stack.Count == 0 ? val : this.Top().Item1;
+            _stack.Push((val, Math.Min(val, top)));
+        }
+
+        public void Pop()
+        {
+            if (_stack.Count == 0) return;
+            _stack.Pop();
+        }
+
+        public (int, int) Top()
+        {
+            if (_stack.Count == 0) return (-1, -1);
+            return _stack.Peek();
+        }
+
+        public int GetMin()
+        {
+            if (_stack.Count == 0) return -1;
+            return this.Top().Item2;
+        }
+    }
 
 }

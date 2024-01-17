@@ -14,11 +14,19 @@ namespace Enterprise.Algorithms
         public int val;
         public TreeNode left;
         public TreeNode right;
+        public TreeNode next;
         public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
         {
             this.val = val;
             this.left = left;
             this.right = right;
+        }
+        public TreeNode(int _val, TreeNode _left, TreeNode _right, TreeNode _next)
+        {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
         }
     }
 
@@ -135,7 +143,7 @@ namespace Enterprise.Algorithms
                 var rightTree = nodes.Dequeue();
                 if (leftTree == null && rightTree == null) { continue; }
                 if (leftTree == null || rightTree == null) { return false; }
-                if(leftTree.val == rightTree.val) { return false; }
+                if (leftTree.val == rightTree.val) { return false; }
                 nodes.Enqueue(leftTree.left);
                 nodes.Enqueue(rightTree.right);
                 nodes.Enqueue(leftTree.right);
@@ -151,11 +159,34 @@ namespace Enterprise.Algorithms
         }
         public bool HasPathSum(TreeNode root, int targetSum)
         {
-
+            return false;
         }
         public int CountUnivalSubtrees(TreeNode root)
         {
+            return 0;
+        }
+        public static TreeNode Connect(TreeNode root)
+        {
+            Queue<TreeNode> nodes = new Queue<TreeNode>();
+            nodes.Enqueue(root);
+            while (nodes.Count > 0)
+            {
+                int currentQueuCount = nodes.Count;
+                for (int i = 1; i < currentQueuCount; i++)
+                    nodes.ElementAt(i - 1).next = nodes.ElementAt(i);
 
+                for (int i = 0; i < currentQueuCount; i++)
+                {
+                    TreeNode node = nodes.Dequeue();
+                    if (node.left != null)
+                        nodes.Enqueue(node.left);
+                    if (node.right != null)
+                        nodes.Enqueue(node.right);
+                }
+            }
+            return root;
         }
     }
+
+
 }

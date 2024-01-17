@@ -447,6 +447,37 @@ namespace Enterprise.Algorithms
             newHead.next = head;
             return newHead;
         }
+        public ListNode ReverseList(ListNode head)
+        {
+            if (head == null || head.next == null) return head;
+            ListNode newHead = ReverseList(head.next);
+            head.next.next = head;
+            head.next = null;
+            return newHead;
+        }
+        public ListNode InsertionSortList(ListNode head)
+        {
+            if (head == null) { return head; }
+            ListNode sortedHead = head;
+            head = head.next;
+            while (head != null)
+            {
+                ListNode tempSortedHead = sortedHead;
+                ListNode prevNode = null;
+                while (tempSortedHead != null && head.val <= tempSortedHead.val)
+                {
+                    prevNode = tempSortedHead;
+                    tempSortedHead = tempSortedHead.next;
+                }
+                ListNode tempHead = head;
+                tempHead.next = tempSortedHead;
+                if (prevNode == null) { sortedHead = tempHead; }
+                else { prevNode.next = tempHead; }
+
+                head = head.next;
+            }
+            return sortedHead;
+        }
     }
 }
 
